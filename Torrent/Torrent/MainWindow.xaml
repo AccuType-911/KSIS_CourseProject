@@ -1,0 +1,70 @@
+﻿<Window x:Name="MainWindow1" x:Class="Torrent.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Torrent"
+        mc:Ignorable="d"
+        Title="Торрент" Height="450" Width="800">
+    <Grid x:Name="WindowsGrid">
+        <Menu Height="25" VerticalAlignment="Top" FontFamily="AcmeFont">
+            <Menu.Background>
+                <LinearGradientBrush EndPoint="0,1">
+                    <GradientStop Color="#FFF6F6F6" Offset="0.25"/>
+                    <GradientStop Color="#FFEAE8E8" Offset="0.25"/>
+                    <GradientStop Color="#FFDCD9D9" Offset="0.8"/>
+                    <GradientStop Color="White" Offset="1"/>
+                </LinearGradientBrush>
+            </Menu.Background>
+            <MenuItem Header="Файл">
+                <MenuItem Header="Добавить торрент" ></MenuItem>
+                <Separator />
+                <MenuItem Header="Выход" ></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Настройки" ></MenuItem>
+            <MenuItem Header="Справка" ></MenuItem>
+        </Menu>
+        <DataGrid x:Name="TorrentsGrid" Margin="10,87,10,86" Height="261">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Width="35" />
+                <DataGridHyperlinkColumn Header="Название" Width="150" />
+                <DataGridTextColumn Header="Размер" Width="60" />
+                <DataGridTemplateColumn Header="Состояние" Width="200" />
+                <DataGridTextColumn Header="Скорость" Width="95" />
+                <DataGridTextColumn Header="Время" Width="80" />
+                <DataGridTextColumn Header="Сиды/Пиры" Width="80" />
+                <DataGridTextColumn Header="Отдано" Width="80" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,56,0,0" VerticalAlignment="Top" Width="780" FontSize="18"/>
+        <StackPanel x:Name="ButtonsStackPanel" Margin="10,360,10,10" Orientation="Horizontal">
+            <Button x:Name="AddTorrentButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FF0E17D3"/>
+                        <GradientStop Color="#FF0E17D3" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image x:Name="AddTorrentButtonImage" Source="/Resources/AddButtonImage.png" />
+            </Button>
+            <Button x:Name="StopDownloadButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="Red" Offset="0"/>
+                        <GradientStop Color="Red" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image x:Name="StopDownloadButtonImage" Source="/Resources/StopDownloadButton.png"/>
+            </Button>
+            <Button x:Name="ResumeDownloadButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+                <Button.Background>
+                    <LinearGradientBrush EndPoint="0,1">
+                        <GradientStop Color="#FF1EF03B"/>
+                        <GradientStop Color="#FF1EF03B" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Image x:Name="ResumeDownloadButtonImage" Source="/Resources/ResumeDownloadButtonImage.png"/>
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
