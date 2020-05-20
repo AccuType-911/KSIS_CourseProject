@@ -8,12 +8,21 @@
 
   <ItemGroup>
     <None Remove=".png" />
+    <None Remove="AddButtonImage.png" />
+    <None Remove="ResumeDownloadButtonImage.png" />
+    <None Remove="StopDownloadButton.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="MonoTorrent">
       <HintPath>..\MonoTorrent.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="AddButtonImage.png" />
+    <Resource Include="ResumeDownloadButtonImage.png" />
+    <Resource Include="StopDownloadButton.png" />
   </ItemGroup>
 
 </Project>

@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Torrent"
         mc:Ignorable="d"
-        Title="Торрент" Height="450" Width="800">
+        Title="Торрент" Height="450" Width="960" ResizeMode="NoResize">
     <Grid x:Name="WindowsGrid">
-        <Menu Height="25" VerticalAlignment="Top" FontFamily="AcmeFont">
+        <Menu Height="25" FontFamily="AcmeFont" VerticalAlignment="Top">
             <Menu.Background>
                 <LinearGradientBrush EndPoint="0,1">
                     <GradientStop Color="#FFF6F6F6" Offset="0.25"/>
@@ -24,7 +24,7 @@
             <MenuItem Header="Настройки" ></MenuItem>
             <MenuItem Header="Справка" ></MenuItem>
         </Menu>
-        <DataGrid x:Name="TorrentsGrid" Margin="10,87,10,86" Height="261">
+        <DataGrid x:Name="TorrentsGrid" Margin="0,91,0,91" Width="800" HorizontalAlignment="Center">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Width="35" />
                 <DataGridHyperlinkColumn Header="Название" Width="150" />
@@ -36,35 +36,51 @@
                 <DataGridTextColumn Header="Отдано" Width="80" />
             </DataGrid.Columns>
         </DataGrid>
-        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,56,0,0" VerticalAlignment="Top" Width="780" FontSize="18"/>
-        <StackPanel x:Name="ButtonsStackPanel" Margin="10,360,10,10" Orientation="Horizontal">
-            <Button x:Name="AddTorrentButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+        <StackPanel x:Name="ButtonsStackPanel" Margin="0,368,0,0" Orientation="Horizontal" Background="#7FB8B8B8" Height="66">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Margin" Value="5,5,5,5"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#FF0E17D3"/>
-                        <GradientStop Color="#FF0E17D3" Offset="1"/>
+                        <GradientStop Color="#7F0E17D3"/>
+                        <GradientStop Color="#7F0E17D3" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
-                <Image x:Name="AddTorrentButtonImage" Source="/Resources/AddButtonImage.png" />
+                <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                    <Image x:Name="AddTorrentButtonImage" Source="AddButtonImage.png"/>
+                    <TextBlock HorizontalAlignment="Center" Text=" Добавить торрент " VerticalAlignment="Center" />
+                </StackPanel>
             </Button>
-            <Button x:Name="StopDownloadButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+            <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305
+                    ">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="Red" Offset="0"/>
-                        <GradientStop Color="Red" Offset="1"/>
+                        <GradientStop Color="#7FFF0000" Offset="0"/>
+                        <GradientStop Color="#7FFF0000" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
-                <Image x:Name="StopDownloadButtonImage" Source="/Resources/StopDownloadButton.png"/>
+                <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                    <Image x:Name="StopDownloadButtonImage" Source="StopDownloadButton.png" />
+                    <TextBlock HorizontalAlignment="Center" Text=" Остановить загрузку " VerticalAlignment="Center" />
+                </StackPanel>
             </Button>
-            <Button x:Name="ResumeDownloadButton" HorizontalAlignment="Left" VerticalAlignment="Top" Width="31" Height="32" Foreground="Black" BorderBrush="Black">
+            <Button x:Name="ResumeDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305
+                    ">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#FF1EF03B"/>
-                        <GradientStop Color="#FF1EF03B" Offset="1"/>
+                        <GradientStop Color="#7F1EF03B"/>
+                        <GradientStop Color="#7F1EF03B" Offset="1"/>
                     </LinearGradientBrush>
                 </Button.Background>
-                <Image x:Name="ResumeDownloadButtonImage" Source="/Resources/ResumeDownloadButtonImage.png"/>
+                <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                    <Image x:Name="ResumeDownloadButtonImage" Source="ResumeDownloadButtonImage.png"/>
+                    <TextBlock HorizontalAlignment="Center" Text=" Возобновить загрузку " VerticalAlignment="Center" />
+                </StackPanel>
             </Button>
         </StackPanel>
+        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" Width="800" FontSize="18" Background="#7FB8B8B8"/>
     </Grid>
 </Window>
