@@ -16,6 +16,7 @@ namespace TorrentLibrary
     public class TorrentClient
     {
         private const int Port = 1317;
+        private const int ShowInfoTimeInterval = 3000;
 
         private TextBox commonInfoTextBox;
         private DataGrid torrentsDataGrid;
@@ -25,7 +26,7 @@ namespace TorrentLibrary
         //private string fastResumeFilePath;
         private string dhtNodeFile;
         private ClientEngine engine;
-        private List<TorrentManager> torrents;
+        private List<TorrentManager> torrentsManagers;
         private Top10Listener listener;
 
         public TorrentClient(TextBox textBox, DataGrid dataGrid)
@@ -36,28 +37,38 @@ namespace TorrentLibrary
             downloadsPath = Path.Combine(basePath, "Downloads");
             //fastResumeFilePath = Path.Combine(torrentsPath, "fastresume.data");
             dhtNodeFile = Path.Combine(basePath, "DhtNodes");
-            torrents = new List<TorrentManager>();
+            torrentsManagers = new List<TorrentManager>();
             listener = new Top10Listener(10);
 
             AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown().Wait(); };
-            AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { Console.WriteLine(e.ExceptionObject); Shutdown().Wait(); };
-            Thread.GetDomain().UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { Console.WriteLine(e.ExceptionObject); Shutdown().Wait(); };
+            AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
+            Thread.GetDomain().UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
             Setup();
         }
 
-        private void ClearText()
+        private void TextBoxClear()
         {
-            commonInfoTextBox.Clear();
+            commonInfoTextBox.Dispatcher.Invoke(() =>
+            {
+                commonInfoTextBox.Clear();
+            });
         }
 
-        private void WriteLine(string data)
+        private void TextBoxWriteLine(string data)
         {
-            commonInfoTextBox.Text += data;
+            commonInfoTextBox.Dispatcher.Invoke(() =>
+            {
+                commonInfoTextBox.Text += data;
+            });       
         }
 
-        private void SetTorrentsDataGridContent(List<TorrentDownloadInfo> torrentsDownloadInfo)
+        private void TorrentsDataGridUpdate()
         {
-            torrentsDataGrid.ItemsSource = torrentsDownloadInfo;
+            torrentsDataGrid.Dispatcher.Invoke(() =>
+            {
+                var torrentsDownloadInfo = GetTorrentsDownloadInfo();
+                torrentsDataGrid.ItemsSource = torrentsDownloadInfo;
+            });
         }
 
         public async void Setup()
@@ -81,7 +92,7 @@ namespace TorrentLibrary
             }
             catch
             {
-                WriteLine("No existing dht nodes could be loaded");
+                TextBoxWriteLine("No existing dht nodes could be loaded");
             }
 
             var dhtEngine = new DhtEngine(new IPEndPoint(IPAddress.Any, port));
@@ -114,60 +125,37 @@ namespace TorrentLibrary
                 }
                 catch (Exception exception)
                 {
-                    WriteLine("Couldn't decode: " + torrentPath + " ");
-                    WriteLine(exception.Message);
+                    TextBoxWriteLine("Couldn't decode: " + torrentPath + " ");
+                    TextBoxWriteLine(exception.Message);
                 }
 
                 var manager = new TorrentManager(torrent, downloadsPath, torrentDefaults);
                 await engine.Register(manager);
 
-                torrents.Add(manager);
-                manager.PeersFound += Manager_PeersFound;
+                torrentsManagers.Add(manager);
+
+                TorrentsDataGridUpdate();
             }
         }
 
         public async Task StartEngine()
         {
-            if (torrents.Count == 0)
+            if (torrentsManagers.Count == 0)
             {
-                WriteLine("No torrents found in the Torrents directory");
-                WriteLine("Exiting...");
+                TextBoxWriteLine("No torrents found in the Torrents directory");
+                TextBoxWriteLine("Exiting...");
                 engine.Dispose();
                 return;
             }
 
-            foreach (var manager in torrents)  // TODO: ПЕРЕДЕЛАТЬ ПОД 1 ТОРРЕНТ, А НЕ СПИСОК
+            foreach (var manager in torrentsManagers)
             {
-                manager.PeerConnected += (o, e) =>
-                {
-                    lock (listener)
-                        listener.WriteLine($"Connection succeeded: {e.Peer.Uri}");
-                };
-                manager.ConnectionAttemptFailed += (o, e) =>
-                {
-                    lock (listener)
-                        listener.WriteLine($"Connection failed: {e.Peer.ConnectionUri} - {e.Reason} - {e.Peer.AllowedEncryption}");
-                };
-                manager.PieceHashed += delegate (object o, PieceHashedEventArgs e)
-                {
-                    lock (listener)
-                        listener.WriteLine($"Piece Hashed: {e.PieceIndex} - {(e.HashPassed ? "Pass" : "Fail")}");
-                };
-                manager.TorrentStateChanged += delegate (object o, TorrentStateChangedEventArgs e)
-                {
-                    lock (listener)
-                        listener.WriteLine($"OldState: {e.OldState} NewState: {e.NewState}");
-                };
-                manager.TrackerManager.AnnounceComplete += (sender, e) =>
-                {
-                    listener.WriteLine($"{e.Successful}: {e.Tracker}");
-                };
                 await manager.StartAsync();
             }
 
             await engine.EnablePortForwardingAsync(CancellationToken.None);
 
-            ShowDownloadInfo(torrents);
+            ShowDownloadInfo(torrentsManagers);
 
             await engine.DisablePortForwardingAsync(CancellationToken.None);
         }
@@ -175,27 +163,41 @@ namespace TorrentLibrary
         private string GetCommonInfo()
         {
             var commonInfoStringBuilder = new StringBuilder(1024);
-            AppendFormat(commonInfoStringBuilder, "Total Download Rate: {0:0.00}kB/sec", engine.TotalDownloadSpeed / 1024.0);
-            AppendFormat(commonInfoStringBuilder, "Total Upload Rate:   {0:0.00}kB/sec", engine.TotalUploadSpeed / 1024.0);
+            AppendFormat(commonInfoStringBuilder, "Total Download Rate: {0:0.00} kB/s", engine.TotalDownloadSpeed / 1024.0);
+            AppendFormat(commonInfoStringBuilder, "Total Upload Rate:   {0:0.00} kB/s", engine.TotalUploadSpeed / 1024.0);
             AppendFormat(commonInfoStringBuilder, "Disk Read Rate:      {0:0.00} kB/s", engine.DiskManager.ReadRate / 1024.0);
             AppendFormat(commonInfoStringBuilder, "Disk Write Rate:     {0:0.00} kB/s", engine.DiskManager.WriteRate / 1024.0);
-            AppendFormat(commonInfoStringBuilder, "Total Read:         {0:0.00} kB", engine.DiskManager.TotalRead / 1024.0);
-            AppendFormat(commonInfoStringBuilder, "Total Written:      {0:0.00} kB", engine.DiskManager.TotalWritten / 1024.0);
+            AppendFormat(commonInfoStringBuilder, "Total Read:          {0:0.00} kB", engine.DiskManager.TotalRead / 1024.0);
+            AppendFormat(commonInfoStringBuilder, "Total Written:       {0:0.00} kB", engine.DiskManager.TotalWritten / 1024.0);
             AppendFormat(commonInfoStringBuilder, "Open Connections:    {0}", engine.ConnectionManager.OpenConnections);
             return commonInfoStringBuilder.ToString();
         }
 
-        private TorrentDownloadInfo GetTorrentDownloadInfo(TorrentManager manager)
+        private TorrentDownloadInfo GetTorrentDownloadInfo(TorrentManager manager, int number)
         {
             var downloadInfo = new TorrentDownloadInfo();
+            downloadInfo.Number = number;
             downloadInfo.State = manager.State;
             downloadInfo.Name = manager.Torrent == null ? "MetaDataMode" : manager.Torrent.Name;
-            downloadInfo.Progress = manager.Progress;
-            downloadInfo.DownloadSpeed = manager.Monitor.DownloadSpeed / 1024.0;
-            downloadInfo.UploadSpeed = manager.Monitor.UploadSpeed / 1024.0;
-            downloadInfo.DataBytesDownloaded = manager.Monitor.DataBytesDownloaded / (1024.0 * 1024.0);
-            downloadInfo.DataBytesUploaded = manager.Monitor.DataBytesUploaded / (1024.0 * 1024.0);
+            downloadInfo.Progress = manager.Progress != 100.0 ? string.Format("{0:0.00} %", manager.Progress) : "Загружено";
+            downloadInfo.DownloadSpeed = string.Format("{0:0.00} kB/s", manager.Monitor.DownloadSpeed / 1024.0);
+            downloadInfo.UploadSpeed = string.Format("{0:0.00} kB/s", manager.Monitor.UploadSpeed / 1024.0);
+            downloadInfo.DownloadedData = string.Format("{0:0.00} MB", manager.Monitor.DataBytesDownloaded / (1024.0 * 1024.0));
+            downloadInfo.UploadedData = string.Format("{0:0.00} MB", manager.Monitor.DataBytesUploaded / (1024.0 * 1024.0));
             return downloadInfo;
+        }
+
+        private List<TorrentDownloadInfo> GetTorrentsDownloadInfo()
+        {
+            var torrentsDownloadInfo = new List<TorrentDownloadInfo>();
+            var number = 1;
+            foreach (var manager in torrentsManagers)
+            {
+                var torrentDownloadInfo = GetTorrentDownloadInfo(manager, number);
+                torrentsDownloadInfo.Add(torrentDownloadInfo);
+                number++;
+            }
+            return torrentsDownloadInfo;
         }
 
         private void ShowDownloadInfo(List<TorrentManager> torrents)
@@ -205,61 +207,37 @@ namespace TorrentLibrary
             {
                 isRunning = torrents.Exists(manager => manager.State != TorrentState.Stopped);
 
-                var commonInfo = GetCommonInfo();
-                var torrentsDownloadInfo = new List<TorrentDownloadInfo>();
-                foreach (var manager in torrents)
-                {
-                    var torrentDownloadInfo = GetTorrentDownloadInfo(manager);
-                    torrentsDownloadInfo.Add(torrentDownloadInfo);
-                }
+                TextBoxClear();
+                TextBoxWriteLine(GetCommonInfo());
+                TorrentsDataGridUpdate();
 
-
-                commonInfoTextBox.Dispatcher.Invoke(new Action(ClearText));
-                commonInfoTextBox.Dispatcher.Invoke(new Action<string>(WriteLine), commonInfo);
-                torrentsDataGrid.Dispatcher.Invoke(new Action<List<TorrentDownloadInfo>>(SetTorrentsDataGridContent), torrentsDownloadInfo);
-                //listener.ExportTo(Console.Out);
-
-                Thread.Sleep(5000);
+                Thread.Sleep(ShowInfoTimeInterval);
             }
         }
 
-        private void Manager_PeersFound(object sender, PeersAddedEventArgs e)
-        {
-            lock (listener)
-                listener.WriteLine($"Found {e.NewPeers} new peers and {e.ExistingPeers} existing peers");//throw new Exception("The method or operation is not implemented.");
-        }
-
-        private void AppendSeparator(StringBuilder stringBuilder)
-        {
-            AppendFormat(stringBuilder, "", null);
-            AppendFormat(stringBuilder, "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -", null);
-            AppendFormat(stringBuilder, "", null);
-        }
-
-        private void AppendFormat(StringBuilder stringBuilder, string str, params object[] formatting)
+        private void AppendFormat(StringBuilder stringBuilder, string data, params object[] formatting)
         {
             if (formatting != null)
-                stringBuilder.AppendFormat(str, formatting);
+                stringBuilder.AppendFormat(data, formatting);
             else
-                stringBuilder.Append(str);
+                stringBuilder.Append(data);
             stringBuilder.AppendLine();
         }
 
         private async Task Shutdown()
         {
             var fastResume = new BEncodedDictionary();
-            for (var i = 0; i < torrents.Count; i++)
+            for (var i = 0; i < torrentsManagers.Count; i++)
             {
-                var stoppingTask = torrents[i].StopAsync();
-                while (torrents[i].State != TorrentState.Stopped)
+                var stoppingTask = torrentsManagers[i].StopAsync();
+                while (torrentsManagers[i].State != TorrentState.Stopped)
                 {
-                    WriteLine(torrents[i].Torrent.Name + " is " + torrents[i].State);
                     Thread.Sleep(250);
                 }
                 await stoppingTask;
 
-                if (torrents[i].HashChecked)
-                    fastResume.Add(torrents[i].Torrent.InfoHash.ToHex(), torrents[i].SaveFastResume().Encode());
+                if (torrentsManagers[i].HashChecked)
+                    fastResume.Add(torrentsManagers[i].Torrent.InfoHash.ToHex(), torrentsManagers[i].SaveFastResume().Encode());
             }
 
             var nodes = await engine.DhtEngine.SaveNodesAsync();

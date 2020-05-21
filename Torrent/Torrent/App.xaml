@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:Torrent"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary Source="styles/DataGrid.xaml"/>
     </Application.Resources>
 </Application>

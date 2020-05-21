@@ -1,18 +1,6 @@
 ﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using TorrentLibrary;
 
 namespace Torrent
@@ -22,19 +10,21 @@ namespace Torrent
     /// </summary>
     public partial class MainWindow : Window
     {
+        private const string OpenFileDialogFilter = "Торрент - файл | *.torrent";
+
         private TorrentClient torrentClient;
 
         public MainWindow()
         {
             InitializeComponent();
-            torrentClient = new TorrentClient(LogTextBox, TorrentsGrid);
+            torrentClient = new TorrentClient(CommonInfoTextBox, TorrentsDataGrid);
         }
 
         private void AddTorrentButton_Click(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Торрент - файл | *.torrent";
-            if ((bool)openFileDialog.ShowDialog())
+            openFileDialog.Filter = OpenFileDialogFilter;
+            if (openFileDialog.ShowDialog().Value)
             {
                 var torrentPath = openFileDialog.FileName;
                 torrentClient.AddTorrent(torrentPath);

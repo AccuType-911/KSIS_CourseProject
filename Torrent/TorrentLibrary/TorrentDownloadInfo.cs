@@ -7,13 +7,14 @@ namespace TorrentLibrary
 {
     public class TorrentDownloadInfo
     {
+        public int Number { get; set; }
         public TorrentState State { get; set; }
         public string Name { get; set; }
-        public double Progress { get; set; }
-        public double DownloadSpeed { get; set; }
-        public double UploadSpeed { get; set; }
-        public double DataBytesDownloaded { get; set; }
-        public double DataBytesUploaded { get; set; }
+        public string Progress { get; set; }
+        public string DownloadSpeed { get; set; }
+        public string UploadSpeed { get; set; }
+        public string DownloadedData { get; set; }
+        public string UploadedData { get; set; }
 
     }
 }
