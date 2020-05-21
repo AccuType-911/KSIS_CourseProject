@@ -1,0 +1,153 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Mono.Nat/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/Mono.Nat.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Mono.Nat.dll": {}
+        }
+      },
+      "MonoTorrent/1.0.21": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Nat": "2.0.0",
+          "ReusableTasks": "1.0.6"
+        },
+        "compile": {
+          "lib/netstandard2.0/MonoTorrent.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/MonoTorrent.dll": {}
+        }
+      },
+      "ReusableTasks/1.0.6": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.1/ReusableTasks.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.1/ReusableTasks.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Mono.Nat/2.0.0": {
+      "sha512": "OFSbm6dNSs8N50g80NedHDReBv+UCwbZc+ZQEOnKJ3+uwTU533Qa3KO+dZOS/MnzPfstRLYEOelQQwftrehsig==",
+      "type": "package",
+      "path": "mono.nat/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/netstandard2.0/Mono.Nat.dll",
+        "lib/netstandard2.0/Mono.Nat.xml",
+        "mono.nat.2.0.0.nupkg.sha512",
+        "mono.nat.nuspec"
+      ]
+    },
+    "MonoTorrent/1.0.21": {
+      "sha512": "e3CsgqAIpVfYIEYdCLsydw85QfEbeUUaYzBqqiL7PKRrShY23M1Ul68fIcPPvihmAsZpKubkjZUElVbOUUTNMQ==",
+      "type": "package",
+      "path": "monotorrent/1.0.21",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "lib/netstandard2.0/MonoTorrent.dll",
+        "lib/netstandard2.0/MonoTorrent.xml",
+        "monotorrent.1.0.21.nupkg.sha512",
+        "monotorrent.nuspec"
+      ]
+    },
+    "ReusableTasks/1.0.6": {
+      "sha512": "OsLJ2+Ei48B+pPxbK3WJXVs+FaP9wY0rDSO+lBYpcLPE2sh8iavMi9YGbqr49m2MQ+u7BMYsdw10yehKx7zhaw==",
+      "type": "package",
+      "path": "reusabletasks/1.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/netstandard2.0/ReusableTasks.dll",
+        "lib/netstandard2.0/ReusableTasks.xml",
+        "lib/netstandard2.1/ReusableTasks.dll",
+        "lib/netstandard2.1/ReusableTasks.xml",
+        "reusabletasks.1.0.6.nupkg.sha512",
+        "reusabletasks.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "MonoTorrent >= 1.0.21"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\asus\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\asus\\Desktop\\KSIS_CourseProject\\Torrent\\TorrentLibrary\\TorrentLibrary.csproj",
+      "projectName": "TorrentLibrary",
+      "projectPath": "C:\\Users\\asus\\Desktop\\KSIS_CourseProject\\Torrent\\TorrentLibrary\\TorrentLibrary.csproj",
+      "packagesPath": "C:\\Users\\asus\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\asus\\Desktop\\KSIS_CourseProject\\Torrent\\TorrentLibrary\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "dependencies": {
+          "MonoTorrent": {
+            "target": "Package",
+            "version": "[1.0.21, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          },
+          "Microsoft.WindowsDesktop.App.WPF": {
+            "privateAssets": "none"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

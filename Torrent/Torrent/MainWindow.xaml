@@ -24,16 +24,16 @@
             <MenuItem Header="Настройки" ></MenuItem>
             <MenuItem Header="Справка" ></MenuItem>
         </Menu>
-        <DataGrid x:Name="TorrentsGrid" Margin="0,91,0,91" Width="800" HorizontalAlignment="Center">
+        <DataGrid x:Name="TorrentsGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,69,0,177" Width="802" HorizontalAlignment="Center">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="№" Width="35" />
-                <DataGridHyperlinkColumn Header="Название" Width="150" />
-                <DataGridTextColumn Header="Размер" Width="60" />
-                <DataGridTemplateColumn Header="Состояние" Width="200" />
-                <DataGridTextColumn Header="Скорость" Width="95" />
-                <DataGridTextColumn Header="Время" Width="80" />
-                <DataGridTextColumn Header="Сиды/Пиры" Width="80" />
-                <DataGridTextColumn Header="Отдано" Width="80" />
+                <DataGridTextColumn Header="№" Binding="{Binding Number}" Width="35" />
+                <DataGridTextColumn Header="Состояние" Binding="{Binding State}" Width="80" />
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="150" />
+                <DataGridTextColumn Header="Прогресс" Binding="{Binding Progress}"  Width="200" />
+                <DataGridTextColumn Header="Скор. загрузки" Binding="{Binding DownloadSpeed}" Width="100" />
+                <DataGridTextColumn Header="Скор. скачиван." Binding="{Binding UploadSpeed}" Width="100" />
+                <DataGridTextColumn Header="Загружено" Binding="{Binding DownloadedBytes}" Width="80" />
+                <DataGridTextColumn Header="Отдано" Binding="{Binding UploadetBytes}" Width="80" />
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel x:Name="ButtonsStackPanel" Margin="0,368,0,0" Orientation="Horizontal" Background="#7FB8B8B8" Height="66">
@@ -42,7 +42,7 @@
                     <Setter Property="Margin" Value="5,5,5,5"/>
                 </Style>
             </StackPanel.Resources>
-            <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305">
+            <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305" Click="AddTorrentButton_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0,1">
                         <GradientStop Color="#7F0E17D3"/>
@@ -68,7 +68,7 @@
                 </StackPanel>
             </Button>
             <Button x:Name="ResumeDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305
-                    ">
+                    " Click="ResumeDownloadButton_Click">
                 <Button.Background>
                     <LinearGradientBrush EndPoint="0,1">
                         <GradientStop Color="#7F1EF03B"/>
@@ -81,6 +81,7 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,52,0,0" VerticalAlignment="Top" Width="800" FontSize="18" Background="#7FB8B8B8"/>
+        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="800" FontSize="18" Background="#7FB8B8B8"/>
+        <TextBox x:Name="LogTextBox" HorizontalAlignment="Center" IsReadOnly="True" Margin="0,262,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="801" Height="101"/>
     </Grid>
 </Window>

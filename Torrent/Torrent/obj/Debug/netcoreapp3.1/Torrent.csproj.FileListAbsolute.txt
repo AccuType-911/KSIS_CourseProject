@@ -4,6 +4,10 @@ C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\Torrent.runtimeconfig.dev.json
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\Torrent.dll
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\Torrent.pdb
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\MonoTorrent.dll
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\TorrentLibrary.dll
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\TorrentLibrary.pdb
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.csprojAssemblyReference.cache
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\MainWindow.g.cs
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\App.g.cs
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent_MarkupCompile.cache
@@ -12,9 +16,9 @@ C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.g.resources
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.AssemblyInfoInputs.cache
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.AssemblyInfo.cs
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.csproj.CopyComplete
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.dll
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.pdb
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.genruntimeconfig.cache
-C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\MonoTorrent.dll
-C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\MonoTorrent.xml
-C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Torrent.csproj.CopyComplete
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\Mono.Nat.dll
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1\ReusableTasks.dll

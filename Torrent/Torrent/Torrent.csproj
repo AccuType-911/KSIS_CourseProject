@@ -14,9 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MonoTorrent">
-      <HintPath>..\MonoTorrent.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\TorrentLibrary\TorrentLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

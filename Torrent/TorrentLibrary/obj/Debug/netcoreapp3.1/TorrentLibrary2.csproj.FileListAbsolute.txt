@@ -1,0 +1,8 @@
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\bin\Debug\netcoreapp3.1\TorrentLibrary2.deps.json
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\bin\Debug\netcoreapp3.1\TorrentLibrary2.dll
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\bin\Debug\netcoreapp3.1\TorrentLibrary2.pdb
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\obj\Debug\netcoreapp3.1\TorrentLibrary2.csprojAssemblyReference.cache
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\obj\Debug\netcoreapp3.1\TorrentLibrary2.AssemblyInfoInputs.cache
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\obj\Debug\netcoreapp3.1\TorrentLibrary2.AssemblyInfo.cs
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\obj\Debug\netcoreapp3.1\TorrentLibrary2.dll
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\TorrentLibrary2\obj\Debug\netcoreapp3.1\TorrentLibrary2.pdb
