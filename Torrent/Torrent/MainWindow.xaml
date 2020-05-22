@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Torrent"
         mc:Ignorable="d"
-        Title="Торрент" Height="450" Width="960" ResizeMode="NoResize">
+        Title="Торрент" Height="450" Width="960" ResizeMode="NoResize" Icon="icon.ico">
     <Grid x:Name="WindowsGrid">
         <Menu Height="25" FontFamily="AcmeFont" VerticalAlignment="Top">
             <Menu.Background>

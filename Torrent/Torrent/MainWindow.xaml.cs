@@ -19,6 +19,7 @@ namespace Torrent
         {
             InitializeComponent();
             torrentClient = new TorrentClient(CommonInfoTextBox, TorrentsDataGrid);
+            torrentClient.CheckTorrentsFolder();
         }
 
         private void AddTorrentButton_Click(object sender, RoutedEventArgs e)

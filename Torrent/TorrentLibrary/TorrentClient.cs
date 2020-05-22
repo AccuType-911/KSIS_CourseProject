@@ -137,8 +137,46 @@ namespace TorrentLibrary
                 Directory.CreateDirectory(torrentsPath);
         }
 
+        private bool CheckTorrentInTorrentsPath(string torrentName)
+        {
+            if (File.Exists(Path.Combine(torrentsPath, torrentName)))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void CheckTorrentsFolder()
+        {
+            foreach (var torrentPath in Directory.GetFiles(torrentsPath))
+            {
+                AddTorrent(torrentPath);
+            }
+            TorrentsDataGridUpdate();
+        }
+
+        private void CopyTorrentToTorrentsFolder(string torrentPath)
+        {
+            var torrentName = Path.GetFileName(torrentPath);
+            byte[] torrentBytes;
+            using (var fileStream = new FileStream(torrentPath, FileMode.Open))
+            {
+                torrentBytes = new byte[fileStream.Length];
+                fileStream.Read(torrentBytes, 0, torrentBytes.Length);
+            }
+            using (var fileStream = new FileStream(Path.Combine(torrentsPath, torrentName), FileMode.Create))
+            {
+                fileStream.Write(torrentBytes, 0, torrentBytes.Length);
+            }
+        }
+
         public async void AddTorrent(string torrentPath)
         {
+            var torrentName = Path.GetFileName(torrentPath);
+            if (!CheckTorrentInTorrentsPath(torrentName))
+            {
+                CopyTorrentToTorrentsFolder(torrentPath);
+            }
             var fastResume = TryLoadFastResumeFile();
             Torrent torrent = null;
             var torrentDefaults = new TorrentSettings();
@@ -147,6 +185,7 @@ namespace TorrentLibrary
                 try
                 {
                     torrent = await Torrent.LoadAsync(torrentPath);
+
                 }
                 catch (Exception exception)
                 {
