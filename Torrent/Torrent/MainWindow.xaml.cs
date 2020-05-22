@@ -13,6 +13,7 @@ namespace Torrent
         private const string OpenFileDialogFilter = "Торрент - файл | *.torrent";
 
         private TorrentClient torrentClient;
+        private int selectedIndex;
 
         public MainWindow()
         {
@@ -33,7 +34,28 @@ namespace Torrent
 
         private async void ResumeDownloadButton_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(()=> torrentClient.StartEngine());
+            selectedIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            {
+                await Task.Run(() => torrentClient.StartEngine(selectedIndex));
+            }
+            else
+            {
+                await Task.Run(() => torrentClient.StartEngine());
+            }
+        }
+
+        private async void StopDownloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            selectedIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            {
+                await Task.Run(() => torrentClient.Pause(selectedIndex));
+            }
+            else
+            {
+                await Task.Run(() => torrentClient.Pause());
+            }
         }
     }
 }

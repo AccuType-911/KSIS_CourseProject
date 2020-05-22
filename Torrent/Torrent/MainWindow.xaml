@@ -43,7 +43,7 @@
                     <TextBlock HorizontalAlignment="Center" Text=" Добавить торрент " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Style="{StaticResource SecondButtonStyle}">
+            <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Style="{StaticResource SecondButtonStyle}" Click="StopDownloadButton_Click">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                     <Image x:Name="StopDownloadButtonImage" Source="StopDownloadButton.png" />
                     <TextBlock HorizontalAlignment="Center" Text=" Остановить загрузку " VerticalAlignment="Center" />

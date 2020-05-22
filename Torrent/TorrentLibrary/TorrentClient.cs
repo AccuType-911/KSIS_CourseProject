@@ -23,11 +23,11 @@ namespace TorrentLibrary
 
         private string basePath;
         private string downloadsPath;
-        //private string fastResumeFilePath;
+        private string fastResumeFilePath;
+        private string torrentsPath;
         private string dhtNodeFile;
         private ClientEngine engine;
         private List<TorrentManager> torrentsManagers;
-        private Top10Listener listener;
 
         public TorrentClient(TextBox textBox, DataGrid dataGrid)
         {
@@ -35,15 +35,31 @@ namespace TorrentLibrary
             torrentsDataGrid = dataGrid;
             basePath = Environment.CurrentDirectory;
             downloadsPath = Path.Combine(basePath, "Downloads");
-            //fastResumeFilePath = Path.Combine(torrentsPath, "fastresume.data");
+            torrentsPath = Path.Combine(basePath, "Torrents");
+            fastResumeFilePath = Path.Combine(torrentsPath, "fastresume.data");
             dhtNodeFile = Path.Combine(basePath, "DhtNodes");
             torrentsManagers = new List<TorrentManager>();
-            listener = new Top10Listener(10);
 
             AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown().Wait(); };
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
             Thread.GetDomain().UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
             Setup();
+        }
+
+        private bool CheckActiveTorrents()
+        {
+            foreach (var manager in torrentsManagers) {
+                if (manager.State == TorrentState.Downloading)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public int GetCurrentTorrentsCount()
+        {
+            return torrentsManagers.Count;
         }
 
         private void TextBoxClear()
@@ -59,7 +75,7 @@ namespace TorrentLibrary
             commonInfoTextBox.Dispatcher.Invoke(() =>
             {
                 commonInfoTextBox.Text += data;
-            });       
+            });
         }
 
         private void TorrentsDataGridUpdate()
@@ -67,8 +83,24 @@ namespace TorrentLibrary
             torrentsDataGrid.Dispatcher.Invoke(() =>
             {
                 var torrentsDownloadInfo = GetTorrentsDownloadInfo();
+                var selectedIndex = torrentsDataGrid.SelectedIndex;
                 torrentsDataGrid.ItemsSource = torrentsDownloadInfo;
+                torrentsDataGrid.SelectedIndex = selectedIndex;
             });
+        }
+
+        private BEncodedDictionary TryLoadFastResumeFile()
+        {
+            try
+            {
+                if (File.Exists(fastResumeFilePath))
+                    return BEncodedValue.Decode<BEncodedDictionary>(File.ReadAllBytes(fastResumeFilePath));
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public async void Setup()
@@ -81,7 +113,6 @@ namespace TorrentLibrary
             //engineSettings.GlobalMaxDownloadSpeed = 100 * 1024;
             //engineSettings.MaxReadRate = 1 * 1024 * 1024;
 
-            // Create an instance of the engine.
             engine = new ClientEngine(engineSettings);
 
             var nodes = Array.Empty<byte>();
@@ -102,19 +133,13 @@ namespace TorrentLibrary
             if (!Directory.Exists(engine.Settings.SavePath))
                 Directory.CreateDirectory(engine.Settings.SavePath);
 
-            /*BEncodedDictionary fastResume = new BEncodedDictionary();
-            try
-            {
-                if (File.Exists(fastResumeFilePath))
-                    fastResume = BEncodedValue.Decode<BEncodedDictionary>(File.ReadAllBytes(fastResumeFilePath));
-            }
-            catch                   ПОКА БЕЗ ВОЗМОЖНОСТИ ПАУЗЫ И ВОЗОБНОВЛЕНИЯ
-            {
-            }*/
+            if (!Directory.Exists(torrentsPath))
+                Directory.CreateDirectory(torrentsPath);
         }
 
         public async void AddTorrent(string torrentPath)
         {
+            var fastResume = TryLoadFastResumeFile();
             Torrent torrent = null;
             var torrentDefaults = new TorrentSettings();
             if (torrentPath.EndsWith(".torrent", StringComparison.OrdinalIgnoreCase))
@@ -130,6 +155,8 @@ namespace TorrentLibrary
                 }
 
                 var manager = new TorrentManager(torrent, downloadsPath, torrentDefaults);
+                if (fastResume != null && fastResume.ContainsKey(torrent.InfoHash.ToHex()))
+                    manager.LoadFastResume(new FastResume((BEncodedDictionary)fastResume[torrent.InfoHash.ToHex()]));
                 await engine.Register(manager);
 
                 torrentsManagers.Add(manager);
@@ -142,7 +169,7 @@ namespace TorrentLibrary
         {
             if (torrentsManagers.Count == 0)
             {
-                TextBoxWriteLine("No torrents found in the Torrents directory");
+                TextBoxWriteLine("No torrents");
                 TextBoxWriteLine("Exiting...");
                 engine.Dispose();
                 return;
@@ -158,6 +185,28 @@ namespace TorrentLibrary
             ShowDownloadInfo(torrentsManagers);
 
             await engine.DisablePortForwardingAsync(CancellationToken.None);
+        }
+
+        public async Task StartEngine(int selectedIndex)
+        {
+            if (torrentsManagers.Count == 0)
+            {
+                TextBoxWriteLine("No torrents");
+                TextBoxWriteLine("Exiting...");
+                engine.Dispose();
+                return;
+            }
+
+            await torrentsManagers[selectedIndex].StartAsync();
+
+            await engine.EnablePortForwardingAsync(CancellationToken.None);
+
+            ShowDownloadInfo(torrentsManagers);
+
+            if (!CheckActiveTorrents())
+            {
+                await engine.DisablePortForwardingAsync(CancellationToken.None);
+            }
         }
 
         private string GetCommonInfo()
@@ -224,7 +273,31 @@ namespace TorrentLibrary
             stringBuilder.AppendLine();
         }
 
-        private async Task Shutdown()
+        public async Task Pause()
+        {
+            for (var i = 0; i < torrentsManagers.Count; i++)
+            {
+                var stoppingTask = torrentsManagers[i].StopAsync();
+                while (torrentsManagers[i].State != TorrentState.Stopped)
+                {
+                    Thread.Sleep(250);
+                }
+                await stoppingTask;
+            }
+        }
+
+        public async Task Pause(int selectedIndex)
+        {
+            var stoppingTask = torrentsManagers[selectedIndex].StopAsync();
+            while (torrentsManagers[selectedIndex].State != TorrentState.Stopped)
+            {
+                Thread.Sleep(250);
+            }
+            await stoppingTask;
+
+        }
+
+        public async Task Shutdown()
         {
             var fastResume = new BEncodedDictionary();
             for (var i = 0; i < torrentsManagers.Count; i++)
@@ -242,7 +315,7 @@ namespace TorrentLibrary
 
             var nodes = await engine.DhtEngine.SaveNodesAsync();
             File.WriteAllBytes(dhtNodeFile, nodes);
-            //File.WriteAllBytes(fastResumeFilePath, fastResume.Encode());
+            File.WriteAllBytes(fastResumeFilePath, fastResume.Encode());
             engine.Dispose();
 
             Thread.Sleep(2000);

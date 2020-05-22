@@ -13,12 +13,6 @@
                         <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
-                        <Trigger Property="IsDefaulted" Value="true">
-                           <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border" Property="Background" Value="#BF0E17D3" />
                         </Trigger>
@@ -47,12 +41,6 @@
                         <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
-                        <Trigger Property="IsDefaulted" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border" Property="Background" Value="#BFFF0000" />
                         </Trigger>
@@ -81,12 +69,6 @@
                         <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsKeyboardFocused" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
-                        <Trigger Property="IsDefaulted" Value="true">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="#202020" />
-                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="true">
                             <Setter TargetName="Border" Property="Background" Value="#BF1EF03B" />
                         </Trigger>
