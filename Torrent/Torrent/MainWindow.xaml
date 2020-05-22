@@ -37,37 +37,19 @@
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel x:Name="ButtonsStackPanel" Margin="0,368,0,0" Orientation="Horizontal" Background="#7FB8B8B8" Height="66">
-            <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305" Click="AddTorrentButton_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#7F0E17D3"/>
-                        <GradientStop Color="#7F0E17D3" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305" Click="AddTorrentButton_Click" Style="{StaticResource FirstButtonStyle}">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                     <Image x:Name="AddTorrentButtonImage" Source="AddButtonImage.png"/>
                     <TextBlock HorizontalAlignment="Center" Text=" Добавить торрент " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#7FFF0000" Offset="0"/>
-                        <GradientStop Color="#7FFF0000" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Style="{StaticResource SecondButtonStyle}">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                     <Image x:Name="StopDownloadButtonImage" Source="StopDownloadButton.png" />
                     <TextBlock HorizontalAlignment="Center" Text=" Остановить загрузку " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
-            <Button x:Name="ResumeDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Click="ResumeDownloadButton_Click">
-                <Button.Background>
-                    <LinearGradientBrush EndPoint="0,1">
-                        <GradientStop Color="#7F1EF03B"/>
-                        <GradientStop Color="#7F1EF03B" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
+            <Button x:Name="ResumeDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Click="ResumeDownloadButton_Click" Style="{StaticResource ThirdButtonStyle}">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                     <Image x:Name="ResumeDownloadButtonImage" Source="ResumeDownloadButtonImage.png"/>
                     <TextBlock HorizontalAlignment="Center" Text=" Возобновить загрузку " VerticalAlignment="Center" />

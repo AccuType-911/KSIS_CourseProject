@@ -13,7 +13,7 @@
     <Page Update="styles\DataGrid.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="styles\StackPanel.xaml">
+    <Page Update="styles\Buttons.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
