@@ -18,7 +18,7 @@ namespace Torrent
         public MainWindow()
         {
             InitializeComponent();
-            torrentClient = new TorrentClient(CommonInfoTextBox, TorrentsDataGrid);
+            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager());
             torrentClient.CheckTorrentsFolder();
         }
 
