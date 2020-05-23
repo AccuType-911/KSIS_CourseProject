@@ -24,7 +24,7 @@
             <MenuItem Header="Настройки" ></MenuItem>
             <MenuItem Header="Справка" ></MenuItem>
         </Menu>
-        <DataGrid x:Name="TorrentsDataGrid" ItemsSource="{Binding}" AutoGenerateColumns="False" Margin="0,69,0,177" Width="880" HorizontalAlignment="Center">
+        <DataGrid x:Name="TorrentsDataGrid" ItemsSource="{Binding}" IsReadOnly="True" AutoGenerateColumns="False" Margin="0,69,0,157" Width="880" HorizontalAlignment="Center">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding Number}" Width="35" />
                 <DataGridTextColumn Header="Состояние" Binding="{Binding State}" Width="150" />
@@ -56,7 +56,12 @@
                 </StackPanel>
             </Button>
         </StackPanel>
-        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="880" FontSize="18" Background="#7FB8B8B8"/>
-        <TextBox x:Name="CommonInfoTextBox" HorizontalAlignment="Center" IsReadOnly="True" Margin="0,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="880" Height="101" Background="#7FB8B8B8"/>
+        <Label Content="Список торрентов:" HorizontalAlignment="Center" Margin="0,30,0,0" VerticalAlignment="Top" Width="880" FontSize="18" Background="#7FB8B8B8" FontWeight="Bold"/>
+        <TextBox x:Name="CommonInfoTextBox" HorizontalAlignment="Left" IsReadOnly="True" Margin="212,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="708" Height="101" Background="#7FB8B8B8"/>
+        <Button x:Name="DeleteButton" Margin="40,262,753,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="DeleteButton_Click">
+            <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                <TextBlock HorizontalAlignment="Center" Text=" Удалить торрент " VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
     </Grid>
 </Window>

@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\App.xaml
-3-1257567495
+4-26792278
 
-3-917710711
+42105499823
 196-171719859
-MainWindow.xaml;styles\Buttons.xaml;styles\DataGrid.xaml;
+DeleteTorrentWindow.xaml;MainWindow.xaml;styles\Buttons.xaml;styles\DataGrid.xaml;
 
 False
 

@@ -15,24 +15,33 @@ namespace TorrentLibrary
 {
     public class TorrentClient
     {
-        private const int Port = 1317;
-        private const int ShowInfoTimeInterval = 3000;
+        private int port;
+        private int showingInfoTimeInterval;
 
         private ClientEngine engine;
         private List<TorrentManager> torrentsManagers;
         private UiManager uiManager;
-        private PathsManager pathsManager;
 
-        public TorrentClient(UiManager uiManager, PathsManager pathsManager)
+        public PathsManager pathsManager;
+
+        public TorrentClient(UiManager uiManager, PathsManager pathsManager, int port, int showingInfoTimeInterval)
         {
             torrentsManagers = new List<TorrentManager>();
             this.uiManager = uiManager;
             this.pathsManager = pathsManager;
+            this.port = port;
+            this.showingInfoTimeInterval = showingInfoTimeInterval;
 
             AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown().Wait(); };
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { uiManager.TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
-            Thread.GetDomain().UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { uiManager.TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
             Setup();
+        }
+
+        public void DeleteTorrentManager(int selectedIndex)
+        {
+            torrentsManagers.RemoveAt(selectedIndex);
+            var torrentsDownloadInfo = GetTorrentsDownloadInfo();
+            uiManager.TorrentsDataGridUpdate(torrentsDownloadInfo);
         }
 
         private bool CheckActiveTorrents()
@@ -51,7 +60,12 @@ namespace TorrentLibrary
             return torrentsManagers.Count;
         }
 
-        private BEncodedDictionary TryLoadFastResumeFile()
+        public TorrentManager GetTorrentManager(int selectedTorrentIndex)
+        {
+            return torrentsManagers[selectedTorrentIndex];
+        }
+
+        private BEncodedDictionary LoadFastResumeFile()
         {
             try
             {
@@ -67,7 +81,7 @@ namespace TorrentLibrary
 
         public async void Setup()
         {
-            int port = Port;
+            int port = this.port;
             var engineSettings = new EngineSettings();
             engineSettings.SavePath = pathsManager.DownloadsPath;
             engineSettings.ListenPort = port;
@@ -140,7 +154,7 @@ namespace TorrentLibrary
             {
                 CopyTorrentToTorrentsFolder(torrentPath);
             }
-            var fastResume = TryLoadFastResumeFile();
+            var fastResume = LoadFastResumeFile();
             Torrent torrent = null;
             var torrentDefaults = new TorrentSettings();
             if (torrentPath.EndsWith(".torrent", StringComparison.OrdinalIgnoreCase))
@@ -264,7 +278,7 @@ namespace TorrentLibrary
                 var torrentsDownloadInfo = GetTorrentsDownloadInfo();
                 uiManager.TorrentsDataGridUpdate(torrentsDownloadInfo);
 
-                Thread.Sleep(ShowInfoTimeInterval);
+                Thread.Sleep(showingInfoTimeInterval);
             }
         }
 

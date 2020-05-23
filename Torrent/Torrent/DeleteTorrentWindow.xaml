@@ -1,0 +1,28 @@
+﻿<Window x:Name="DeleteTorrentWindow1" x:Class="Torrent.DeleteTorrentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Torrent"
+        mc:Ignorable="d"
+        Title="Удаление торрента" Height="270" Width="400" Icon="icon.ico" ResizeMode="NoResize">
+    <Grid>
+        <CheckBox x:Name="DeleteFromTorrentsFolderCheckBox" Content="Удалить файл из папки Torrents." HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top"/>
+        <CheckBox x:Name="DeleteFromDownloadsFolderCheckBox" Content="Удалить загруженное содержимое из папки Downloads." HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top"/>
+        <Label Content="Удаление торрента." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Background="#7FB8B8B8" FontSize="18" FontWeight="Bold"/>
+        <Button x:Name="DeleteButton" Margin="10,186,216,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="DeleteButton_Click">
+            <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                <TextBlock HorizontalAlignment="Center" Text=" Подтвердить " VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
+        <Button x:Name="DeleteButton_Copy" Margin="210,186,16,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="DeleteButton_Copy_Click">
+            <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
+                <TextBlock HorizontalAlignment="Center" Text=" Отменить " VerticalAlignment="Center" />
+            </StackPanel>
+        </Button>
+        <TextBlock HorizontalAlignment="Center" Margin="0,109,0,0" VerticalAlignment="Top" Background="#7FB8B8B8" Width="338" Height="61" FontStyle="Italic">
+            <TextBlock.TextDecorations>
+                <TextDecoration/>
+            </TextBlock.TextDecorations><Run Text="Hint: Если вы не выберете ни один из пунктов, произойдет"/><LineBreak/><Run Text="остановка торрента на текущем сеансе, при перезапуске"/><LineBreak/><Run Text="вы снова его увидите."/></TextBlock>
+    </Grid>
+</Window>

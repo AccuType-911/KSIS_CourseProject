@@ -25,3 +25,5 @@ C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\bin\Debug\netcoreapp3.1
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\App.baml
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\Styles\DataGrid.baml
 C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\styles\Buttons.baml
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\DeleteTorrentWindow.g.cs
+C:\Users\asus\Desktop\KSIS_CourseProject\Torrent\Torrent\obj\Debug\netcoreapp3.1\DeleteTorrentWindow.baml

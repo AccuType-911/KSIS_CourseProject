@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using MonoTorrent.Client;
 using System.Threading.Tasks;
 using System.Windows;
 using TorrentLibrary;
@@ -11,6 +12,8 @@ namespace Torrent
     public partial class MainWindow : Window
     {
         private const string OpenFileDialogFilter = "Торрент - файл | *.torrent";
+        private const int Port = 1317;
+        private const int ShowingDownloadInfoTimeInterval = 2500;
 
         private TorrentClient torrentClient;
         private int selectedIndex;
@@ -18,7 +21,7 @@ namespace Torrent
         public MainWindow()
         {
             InitializeComponent();
-            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager());
+            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager(), Port, ShowingDownloadInfoTimeInterval);
             torrentClient.CheckTorrentsFolder();
         }
 
@@ -56,6 +59,27 @@ namespace Torrent
             else
             {
                 await Task.Run(() => torrentClient.Pause());
+            }
+        }
+
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            selectedIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            {
+                await torrentClient.Pause(selectedIndex);
+                var deleteTorrentWindow = new DeleteTorrentWindow();
+                deleteTorrentWindow.Owner = this;
+                deleteTorrentWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                deleteTorrentWindow.TorrentsFolderPath = torrentClient.pathsManager.TorrentsPath;
+                deleteTorrentWindow.DownloadFolderPath = torrentClient.pathsManager.DownloadsPath;
+                deleteTorrentWindow.DeletedTorrentManager = torrentClient.GetTorrentManager(selectedIndex);
+                deleteTorrentWindow.ShowDialog();
+                
+                if (deleteTorrentWindow.IsCancelButtonPressed == false)
+                {
+                    torrentClient.DeleteTorrentManager(selectedIndex);
+                }
             }
         }
     }
