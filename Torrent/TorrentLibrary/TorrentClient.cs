@@ -9,28 +9,24 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace TorrentLibrary
 {
     public class TorrentClient
     {
-        private int port;
-        private int showingInfoTimeInterval;
-
-        private ClientEngine engine;
         private List<TorrentManager> torrentsManagers;
         private UiManager uiManager;
 
+        public ClientEngine engine;
+        public TorrentSettingsManager settingsManager;
         public PathsManager pathsManager;
 
-        public TorrentClient(UiManager uiManager, PathsManager pathsManager, int port, int showingInfoTimeInterval)
+        public TorrentClient(UiManager uiManager, PathsManager pathsManager, TorrentSettingsManager settingsManager)
         {
             torrentsManagers = new List<TorrentManager>();
             this.uiManager = uiManager;
             this.pathsManager = pathsManager;
-            this.port = port;
-            this.showingInfoTimeInterval = showingInfoTimeInterval;
+            this.settingsManager = settingsManager;
 
             AppDomain.CurrentDomain.ProcessExit += delegate { Shutdown().Wait(); };
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs e) { uiManager.TextBoxWriteLine(e.ExceptionObject.ToString()); Shutdown().Wait(); };
@@ -46,7 +42,8 @@ namespace TorrentLibrary
 
         private bool CheckActiveTorrents()
         {
-            foreach (var manager in torrentsManagers) {
+            foreach (var manager in torrentsManagers)
+            {
                 if (manager.State == TorrentState.Downloading)
                 {
                     return true;
@@ -81,13 +78,10 @@ namespace TorrentLibrary
 
         public async void Setup()
         {
-            int port = this.port;
+            var port = settingsManager.Port;
             var engineSettings = new EngineSettings();
             engineSettings.SavePath = pathsManager.DownloadsPath;
             engineSettings.ListenPort = port;
-            //engineSettings.GlobalMaxUploadSpeed = 30 * 1024;
-            //engineSettings.GlobalMaxDownloadSpeed = 100 * 1024;
-            //engineSettings.MaxReadRate = 1 * 1024 * 1024;
 
             engine = new ClientEngine(engineSettings);
 
@@ -105,12 +99,6 @@ namespace TorrentLibrary
             var dhtEngine = new DhtEngine(new IPEndPoint(IPAddress.Any, port));
             await engine.RegisterDhtAsync(dhtEngine);
             await engine.DhtEngine.StartAsync(nodes);
-
-            if (!Directory.Exists(engine.Settings.SavePath))
-                Directory.CreateDirectory(engine.Settings.SavePath);
-
-            if (!Directory.Exists(pathsManager.TorrentsPath))
-                Directory.CreateDirectory(pathsManager.TorrentsPath);
         }
 
         private bool CheckTorrentInTorrentsPath(string torrentName)
@@ -278,7 +266,7 @@ namespace TorrentLibrary
                 var torrentsDownloadInfo = GetTorrentsDownloadInfo();
                 uiManager.TorrentsDataGridUpdate(torrentsDownloadInfo);
 
-                Thread.Sleep(showingInfoTimeInterval);
+                Thread.Sleep(settingsManager.ShowingInfoTimeInterval);
             }
         }
 

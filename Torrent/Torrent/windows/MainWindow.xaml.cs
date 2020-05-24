@@ -21,7 +21,7 @@ namespace Torrent
         public MainWindow()
         {
             InitializeComponent();
-            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager(), Port, ShowingDownloadInfoTimeInterval);
+            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager(), new TorrentSettingsManager(Port, ShowingDownloadInfoTimeInterval));
             torrentClient.CheckTorrentsFolder();
         }
 
@@ -80,6 +80,18 @@ namespace Torrent
                 {
                     torrentClient.DeleteTorrentManager(selectedIndex);
                 }
+            }
+        }
+
+        private async void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            await torrentClient.Pause();
+            var settingsWindow = new SettingsWindow(); 
+            settingsWindow.ShowDialog();
+            var globalSettings = settingsWindow.GlobalSettings;
+            if (globalSettings != null)
+            {
+                torrentClient.settingsManager.SetSettings(torrentClient.engine, globalSettings);
             }
         }
     }

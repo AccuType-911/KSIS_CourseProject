@@ -7,21 +7,27 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="DeleteTorrentWindow.xaml.cs">
+    <Compile Update="windows\DeleteTorrentWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="windows\SettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="DeleteTorrentWindow.xaml">
+    <Page Update="windows\DeleteTorrentWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainWindow.xaml">
+    <Page Update="windows\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="styles\DataGrid.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="styles\Buttons.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="windows\SettingsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

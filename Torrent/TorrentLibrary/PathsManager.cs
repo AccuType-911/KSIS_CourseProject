@@ -20,6 +20,12 @@ namespace TorrentLibrary
             TorrentsPath = Path.Combine(BasePath, "Torrents");
             FastResumeFilePath = Path.Combine(TorrentsPath, "fastresume.data");
             DhtNodeFilePath = Path.Combine(BasePath, "DhtNodes");
+
+            if (!Directory.Exists(DownloadsPath))
+                Directory.CreateDirectory(DownloadsPath);
+
+            if (!Directory.Exists(TorrentsPath))
+                Directory.CreateDirectory(TorrentsPath);
         }
     }
 }

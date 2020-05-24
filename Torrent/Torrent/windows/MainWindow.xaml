@@ -21,7 +21,7 @@
                 <Separator />
                 <MenuItem Header="Выход" ></MenuItem>
             </MenuItem>
-            <MenuItem Header="Настройки" ></MenuItem>
+            <MenuItem Name="SettingsMenuItem" Header="Настройки" Click="SettingsMenuItem_Click"></MenuItem>
             <MenuItem Header="Справка" ></MenuItem>
         </Menu>
         <DataGrid x:Name="TorrentsDataGrid" ItemsSource="{Binding}" IsReadOnly="True" AutoGenerateColumns="False" Margin="0,69,0,157" Width="880" HorizontalAlignment="Center">

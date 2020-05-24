@@ -12,6 +12,7 @@
     <None Remove="icon.ico" />
     <None Remove="ResumeDownloadButtonImage.png" />
     <None Remove="StopDownloadButton.png" />
+    <None Remove="windows\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,7 +21,7 @@
 
   <ItemGroup>
     <Resource Include="AddButtonImage.png" />
-    <Resource Include="icon.ico" />
+    <Resource Include="windows\icon.ico" />
     <Resource Include="ResumeDownloadButtonImage.png" />
     <Resource Include="StopDownloadButton.png" />
   </ItemGroup>
