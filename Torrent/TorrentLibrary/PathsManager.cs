@@ -1,12 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace TorrentLibrary
 {
     public class PathsManager
     {
+        private const string DefaultDownloadsFolderName = "Downloads";
+        private const string DefaultTorrentsFolderName = "Torrents";
+        private const string DefaultFastResumeFileName = "fastresume.data";
+        private const string DefaultDhtNodeFileName = "DhtNodes";
+
         public string BasePath { get; private set; }
         public string DownloadsPath { get; private set; }
         public string FastResumeFilePath { get; private set; }
@@ -16,10 +19,10 @@ namespace TorrentLibrary
         public PathsManager()
         {
             BasePath = Environment.CurrentDirectory;
-            DownloadsPath = Path.Combine(BasePath, "Downloads");
-            TorrentsPath = Path.Combine(BasePath, "Torrents");
-            FastResumeFilePath = Path.Combine(TorrentsPath, "fastresume.data");
-            DhtNodeFilePath = Path.Combine(BasePath, "DhtNodes");
+            DownloadsPath = Path.Combine(BasePath, DefaultDownloadsFolderName);
+            TorrentsPath = Path.Combine(BasePath, DefaultTorrentsFolderName);
+            FastResumeFilePath = Path.Combine(TorrentsPath, DefaultFastResumeFileName);
+            DhtNodeFilePath = Path.Combine(BasePath, DefaultDhtNodeFileName);
 
             if (!Directory.Exists(DownloadsPath))
                 Directory.CreateDirectory(DownloadsPath);

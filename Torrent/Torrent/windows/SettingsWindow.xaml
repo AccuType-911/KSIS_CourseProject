@@ -5,26 +5,42 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Torrent"
         mc:Ignorable="d"
-        Title="Настройки" Height="287" Width="469" Icon="icon.ico" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="Настройки" Icon="icon.ico" ResizeMode="NoResize" ShowInTaskbar="False" HorizontalAlignment="Center" VerticalAlignment="Center" Width="438" Height="411">
     <Grid>
         <Label Content="Общие настройки." HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Background="#7FB8B8B8" FontSize="18" FontWeight="Bold"/>
-        <Button x:Name="ConfirmSettingsButton" Margin="30,210,242,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="ConfirmSettingsButton_Click">
+        <Button x:Name="ConfirmSettingsButton" Margin="10,331,262,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="ConfirmSettingsButton_Click">
             <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                 <TextBlock HorizontalAlignment="Center" Text=" Подтвердить " VerticalAlignment="Center" />
             </StackPanel>
         </Button>
-        <Button x:Name="CancelButton" Margin="237,210,30,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="CancelButton_Click">
+        <Button x:Name="CancelButton" Margin="257,331,10,0" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="30" Style="{StaticResource DeleteButtonStyle}" Background="#BF4B4B4B" Click="CancelButton_Click">
             <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
                 <TextBlock HorizontalAlignment="Center" Text=" Отменить " VerticalAlignment="Center" />
             </StackPanel>
         </Button>
-        <StackPanel Orientation="Horizontal" Margin="10,57,-10,169" >
+        <StackPanel Orientation="Horizontal" Margin="12,104,8,214" >
             <TextBlock Text="Ограничение скорости скачивания: (кБ/с)          " Height="28"/>
-            <TextBox Height="23" x:Name="DownloadSpeedLimitTextBox" Width="134" PreviewTextInput="DownloadSpeedLimitTextBox_PreviewTextInput"  />
+            <TextBox Height="23" x:Name="DownloadSpeedLimitTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"  />
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="10,102,-10,120">
-            <TextBlock Text="Общее ограничение скорости загрузки (кБ/с):   " Height="28"/>
-            <TextBox Height="23" x:Name="UploadSpeedLimitTextBox" Width="134" PreviewTextInput="UploadSpeedLimitTextBox_PreviewTextInput"/>
+        <StackPanel Orientation="Horizontal" Margin="12,133,8,188">
+            <TextBlock Text="Ограничение скорости загрузки (кБ/с):               " Height="28"/>
+            <TextBox Height="23" x:Name="UploadSpeedLimitTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="11,77,9,246">
+            <TextBlock Text="Ограничение скорости чтения с диска (кБ/с):     " Height="28"/>
+            <TextBox Height="23" x:Name="DiskReadLimitTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="9,166,11,169">
+            <TextBlock Text="Ограничение скорости записи на диск (кБ/с):     " Height="28"/>
+            <TextBox Height="23" x:Name="DiskWriteLimitTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="10,51,10,275" >
+            <TextBlock Text="Порт для входящих соединений:                          " Height="28"/>
+            <TextBox Height="23" x:Name="PortTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"  />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="9,193,11,142">
+            <TextBlock Text="Максимальное число открытых соединений:      " Height="28"/>
+            <TextBox Height="23" x:Name="MaxOpenConnectionsCountTextBox" Width="134" PreviewTextInput="TextBoxesDigitsHandler"/>
         </StackPanel>
     </Grid>
 </Window>

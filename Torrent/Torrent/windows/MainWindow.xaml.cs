@@ -1,5 +1,4 @@
 ﻿using Microsoft.Win32;
-using MonoTorrent.Client;
 using System.Threading.Tasks;
 using System.Windows;
 using TorrentLibrary;
@@ -12,16 +11,14 @@ namespace Torrent
     public partial class MainWindow : Window
     {
         private const string OpenFileDialogFilter = "Торрент - файл | *.torrent";
-        private const int Port = 1317;
-        private const int ShowingDownloadInfoTimeInterval = 2500;
 
         private TorrentClient torrentClient;
-        private int selectedIndex;
+        private int selectedTorrentIndex;
 
         public MainWindow()
         {
             InitializeComponent();
-            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager(), new TorrentSettingsManager(Port, ShowingDownloadInfoTimeInterval));
+            torrentClient = new TorrentClient(new UiManager(CommonInfoTextBox, TorrentsDataGrid), new PathsManager(), new TorrentSettingsManager());
             torrentClient.CheckTorrentsFolder();
         }
 
@@ -38,10 +35,10 @@ namespace Torrent
 
         private async void ResumeDownloadButton_Click(object sender, RoutedEventArgs e)
         {
-            selectedIndex = TorrentsDataGrid.SelectedIndex;
-            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            selectedTorrentIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedTorrentIndex > -1 && selectedTorrentIndex < torrentClient.GetCurrentTorrentsCount())
             {
-                await Task.Run(() => torrentClient.StartEngine(selectedIndex));
+                await Task.Run(() => torrentClient.StartEngine(selectedTorrentIndex));
             }
             else
             {
@@ -51,10 +48,10 @@ namespace Torrent
 
         private async void StopDownloadButton_Click(object sender, RoutedEventArgs e)
         {
-            selectedIndex = TorrentsDataGrid.SelectedIndex;
-            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            selectedTorrentIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedTorrentIndex > -1 && selectedTorrentIndex < torrentClient.GetCurrentTorrentsCount())
             {
-                await Task.Run(() => torrentClient.Pause(selectedIndex));
+                await Task.Run(() => torrentClient.Pause(selectedTorrentIndex));
             }
             else
             {
@@ -64,21 +61,21 @@ namespace Torrent
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            selectedIndex = TorrentsDataGrid.SelectedIndex;
-            if (selectedIndex > -1 && selectedIndex < torrentClient.GetCurrentTorrentsCount())
+            selectedTorrentIndex = TorrentsDataGrid.SelectedIndex;
+            if (selectedTorrentIndex > -1 && selectedTorrentIndex < torrentClient.GetCurrentTorrentsCount())
             {
-                await torrentClient.Pause(selectedIndex);
+                await torrentClient.Pause(selectedTorrentIndex);
                 var deleteTorrentWindow = new DeleteTorrentWindow();
                 deleteTorrentWindow.Owner = this;
                 deleteTorrentWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 deleteTorrentWindow.TorrentsFolderPath = torrentClient.pathsManager.TorrentsPath;
                 deleteTorrentWindow.DownloadFolderPath = torrentClient.pathsManager.DownloadsPath;
-                deleteTorrentWindow.DeletedTorrentManager = torrentClient.GetTorrentManager(selectedIndex);
+                deleteTorrentWindow.DeletedTorrentManager = torrentClient.GetTorrentManager(selectedTorrentIndex);
                 deleteTorrentWindow.ShowDialog();
-                
-                if (deleteTorrentWindow.IsCancelButtonPressed == false)
+
+                if (deleteTorrentWindow.IsNoChangingExit == false)
                 {
-                    torrentClient.DeleteTorrentManager(selectedIndex);
+                    torrentClient.DeleteTorrentManager(selectedTorrentIndex);
                 }
             }
         }
@@ -86,11 +83,12 @@ namespace Torrent
         private async void SettingsMenuItem_Click(object sender, RoutedEventArgs e)
         {
             await torrentClient.Pause();
-            var settingsWindow = new SettingsWindow(); 
+            var currentGlobalSettings = torrentClient.settingsManager.GetCurrentSettings(torrentClient.engine);
+            var settingsWindow = new SettingsWindow(currentGlobalSettings);
             settingsWindow.ShowDialog();
-            var globalSettings = settingsWindow.GlobalSettings;
-            if (globalSettings != null)
+            if (settingsWindow.IsNoChangingExit == false)
             {
+                var globalSettings = settingsWindow.GlobalSettings;
                 torrentClient.settingsManager.SetSettings(torrentClient.engine, globalSettings);
             }
         }

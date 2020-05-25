@@ -14,6 +14,11 @@ namespace TorrentLibrary
 {
     public class TorrentClient
     {
+        private const string DhtFileNotFoundedMessage = "Dht-файл не найден!";
+        private const string ReadyTorrentsNotFoundedMessage = "Нету торрентов, которые можно запустить, пожалуйста добавьте несколько!";
+        private const int DefaultPort = 52314;
+        private const int DefaultShowingDownloadInfoTimeInterval = 2500;
+
         private List<TorrentManager> torrentsManagers;
         private UiManager uiManager;
 
@@ -78,7 +83,7 @@ namespace TorrentLibrary
 
         public async void Setup()
         {
-            var port = settingsManager.Port;
+            var port = DefaultPort;
             var engineSettings = new EngineSettings();
             engineSettings.SavePath = pathsManager.DownloadsPath;
             engineSettings.ListenPort = port;
@@ -93,10 +98,10 @@ namespace TorrentLibrary
             }
             catch
             {
-                uiManager.TextBoxWriteLine("No existing dht nodes could be loaded");
+                uiManager.TextBoxWriteLine(DhtFileNotFoundedMessage);
             }
 
-            var dhtEngine = new DhtEngine(new IPEndPoint(IPAddress.Any, port));
+            var dhtEngine = new DhtEngine(new IPEndPoint(IPAddress.Any, DefaultPort));
             await engine.RegisterDhtAsync(dhtEngine);
             await engine.DhtEngine.StartAsync(nodes);
         }
@@ -174,8 +179,7 @@ namespace TorrentLibrary
         {
             if (torrentsManagers.Count == 0)
             {
-                uiManager.TextBoxWriteLine("No torrents");
-                uiManager.TextBoxWriteLine("Exiting...");
+                uiManager.TextBoxWriteLine(ReadyTorrentsNotFoundedMessage);
                 engine.Dispose();
                 return;
             }
@@ -196,8 +200,7 @@ namespace TorrentLibrary
         {
             if (torrentsManagers.Count == 0)
             {
-                uiManager.TextBoxWriteLine("No torrents");
-                uiManager.TextBoxWriteLine("Exiting...");
+                uiManager.TextBoxWriteLine(ReadyTorrentsNotFoundedMessage);
                 engine.Dispose();
                 return;
             }
@@ -266,7 +269,7 @@ namespace TorrentLibrary
                 var torrentsDownloadInfo = GetTorrentsDownloadInfo();
                 uiManager.TorrentsDataGridUpdate(torrentsDownloadInfo);
 
-                Thread.Sleep(settingsManager.ShowingInfoTimeInterval);
+                Thread.Sleep(DefaultShowingDownloadInfoTimeInterval);
             }
         }
 

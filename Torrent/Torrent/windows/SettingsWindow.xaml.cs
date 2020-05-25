@@ -1,14 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using TorrentLibrary;
 
 namespace Torrent
@@ -19,31 +11,64 @@ namespace Torrent
     public partial class SettingsWindow : Window
     {
         public GlobalSettings GlobalSettings { get; private set; }
+        public bool? IsNoChangingExit { get; private set; }
 
-        public SettingsWindow()
+        public SettingsWindow(GlobalSettings currentGlobalSettings)
         {
             InitializeComponent();
+            GlobalSettings = currentGlobalSettings;
+            ShowGlobalSettings();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            IsNoChangingExit = true;
             Close();
+        }
+
+        private void ShowGlobalSettings()
+        {
+            PortTextBox.Text = GlobalSettings.Port.ToString();
+            DiskReadLimitTextBox.Text = GlobalSettings.MaxDiskReadSpeed.ToString();
+            DiskWriteLimitTextBox.Text = GlobalSettings.MaxDiskWriteSpeed.ToString();
+            DownloadSpeedLimitTextBox.Text = GlobalSettings.DownloadSpeedLimit.ToString();
+            UploadSpeedLimitTextBox.Text = GlobalSettings.UploadSpeedLimit.ToString();
+            MaxOpenConnectionsCountTextBox.Text = GlobalSettings.MaxOpenConnectionsCount.ToString();
+        }
+
+        private void SetGlobalSettingsObject()
+        {
+            GlobalSettings.Port = int.Parse(PortTextBox.Text);
+            GlobalSettings.DownloadSpeedLimit = int.Parse(DownloadSpeedLimitTextBox.Text);
+            GlobalSettings.UploadSpeedLimit = int.Parse(UploadSpeedLimitTextBox.Text);
+            GlobalSettings.MaxDiskReadSpeed = int.Parse(DiskReadLimitTextBox.Text);
+            GlobalSettings.MaxDiskWriteSpeed = int.Parse(DiskWriteLimitTextBox.Text);
+            GlobalSettings.MaxOpenConnectionsCount = int.Parse(MaxOpenConnectionsCountTextBox.Text);
+        }
+
+        private bool CheckGlobalSettings()
+        {
+            return GlobalSettings.DownloadSpeedLimit > -1 &&
+            GlobalSettings.UploadSpeedLimit > -1 &&
+            GlobalSettings.MaxDiskReadSpeed > -1 &&
+            GlobalSettings.MaxDiskWriteSpeed > -1 &&
+            GlobalSettings.Port > 0 &&
+            GlobalSettings.MaxOpenConnectionsCount > 0;
         }
 
         private void ConfirmSettingsButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                GlobalSettings = new GlobalSettings();
-                GlobalSettings.DownloadSpeedLimit = int.Parse(DownloadSpeedLimitTextBox.Text);
-                GlobalSettings.UploadSpeedLimit = int.Parse(UploadSpeedLimitTextBox.Text);
-                if (GlobalSettings.DownloadSpeedLimit > -1 && GlobalSettings.UploadSpeedLimit > -1)
+                SetGlobalSettingsObject();
+                if (CheckGlobalSettings())
                 {
+                    IsNoChangingExit = false;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show("Значения должны быть положительные!");
+                    MessageBox.Show("Значения должны быть положительные или 0!");
                 }
             }
             catch
@@ -52,15 +77,7 @@ namespace Torrent
             }
         }
 
-        private void DownloadSpeedLimitTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!Char.IsDigit(e.Text, 0))
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void UploadSpeedLimitTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void TextBoxesDigitsHandler(object sender, TextCompositionEventArgs e)
         {
             if (!Char.IsDigit(e.Text, 0))
             {

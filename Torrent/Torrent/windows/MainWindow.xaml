@@ -6,6 +6,13 @@
         xmlns:local="clr-namespace:Torrent"
         mc:Ignorable="d"
         Title="Торрент" Height="450" Width="960" ResizeMode="NoResize" Icon="icon.ico">
+
+    <Window.Resources>
+        <BitmapImage x:Key="AddButtonImage" UriSource="../resources/AddButtonImage.png"/>
+        <BitmapImage x:Key="ResumeDownloadButtonImage" UriSource="../resources/ResumeDownloadButtonImage.png"/>
+        <BitmapImage x:Key="StopDownloadButtonImage" UriSource="../resources/StopDownloadButtonImage.png"/>
+    </Window.Resources>
+    
     <Grid x:Name="WindowsGrid">
         <Menu Height="25" FontFamily="AcmeFont" VerticalAlignment="Top">
             <Menu.Background>
@@ -16,11 +23,6 @@
                     <GradientStop Color="White" Offset="1"/>
                 </LinearGradientBrush>
             </Menu.Background>
-            <MenuItem Header="Файл">
-                <MenuItem Header="Добавить торрент" ></MenuItem>
-                <Separator />
-                <MenuItem Header="Выход" ></MenuItem>
-            </MenuItem>
             <MenuItem Name="SettingsMenuItem" Header="Настройки" Click="SettingsMenuItem_Click"></MenuItem>
             <MenuItem Header="Справка" ></MenuItem>
         </Menu>
@@ -39,19 +41,19 @@
         <StackPanel x:Name="ButtonsStackPanel" Margin="0,368,0,0" Orientation="Horizontal" Background="#7FB8B8B8" Height="66">
             <Button x:Name="AddTorrentButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" OpacityMask="#FC000000" Height="32" Width="305" Click="AddTorrentButton_Click" Style="{StaticResource FirstButtonStyle}">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
-                    <Image x:Name="AddTorrentButtonImage" Source="AddButtonImage.png"/>
+                    <Image x:Name="AddTorrentButtonImage" Source="{StaticResource AddButtonImage}"/>
                     <TextBlock HorizontalAlignment="Center" Text=" Добавить торрент " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="StopDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Style="{StaticResource SecondButtonStyle}" Click="StopDownloadButton_Click">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
-                    <Image x:Name="StopDownloadButtonImage" Source="StopDownloadButton.png" />
+                    <Image x:Name="StopDownloadButtonImage" Source="{StaticResource StopDownloadButtonImage}" />
                     <TextBlock HorizontalAlignment="Center" Text=" Остановить загрузку " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>
             <Button x:Name="ResumeDownloadButton" VerticalAlignment="Top" Foreground="Black" BorderBrush="Black" Height="32" Width="305" Click="ResumeDownloadButton_Click" Style="{StaticResource ThirdButtonStyle}">
                 <StackPanel Orientation="Horizontal" TextElement.Foreground="White" TextElement.FontSize="16">
-                    <Image x:Name="ResumeDownloadButtonImage" Source="ResumeDownloadButtonImage.png"/>
+                    <Image x:Name="ResumeDownloadButtonImage" Source="{StaticResource ResumeDownloadButtonImage}"/>
                     <TextBlock HorizontalAlignment="Center" Text=" Возобновить загрузку " VerticalAlignment="Center" />
                 </StackPanel>
             </Button>

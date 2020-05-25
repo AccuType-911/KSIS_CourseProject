@@ -12,7 +12,7 @@ namespace Torrent
         public TorrentManager DeletedTorrentManager { get; set; }
         public string TorrentsFolderPath { get; set; }
         public string DownloadFolderPath { get; set; }
-        public bool IsCancelButtonPressed { get; private set; }
+        public bool? IsNoChangingExit { get; private set; }
 
         public DeleteTorrentWindow()
         {
@@ -53,13 +53,13 @@ namespace Torrent
             {
                 DeleteFromDownloadsFolder();
             }
-            IsCancelButtonPressed = false;
+            IsNoChangingExit = false;
             Close();
         }
 
         private void DeleteButton_Copy_Click(object sender, RoutedEventArgs e)
         {
-            IsCancelButtonPressed = true;
+            IsNoChangingExit = true;
             Close();
         }
     }

@@ -1,7 +1,4 @@
 ﻿using MonoTorrent.Client;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace TorrentLibrary
 {
@@ -15,6 +12,5 @@ namespace TorrentLibrary
         public string UploadSpeed { get; set; }
         public string DownloadedData { get; set; }
         public string UploadedData { get; set; }
-
     }
 }

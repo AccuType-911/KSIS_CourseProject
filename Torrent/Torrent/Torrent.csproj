@@ -10,9 +10,14 @@
     <None Remove=".png" />
     <None Remove="AddButtonImage.png" />
     <None Remove="icon.ico" />
+    <None Remove="resources\AddButtonImage.png" />
+    <None Remove="resources\StopDownloadButtonImage.png" />
     <None Remove="ResumeDownloadButtonImage.png" />
     <None Remove="StopDownloadButton.png" />
+    <None Remove="windows\AddButtonImage.png" />
     <None Remove="windows\icon.ico" />
+    <None Remove="windows\ResumeDownloadButtonImage.png" />
+    <None Remove="windows\StopDownloadButton.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,10 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="AddButtonImage.png" />
+    <Resource Include="resources\AddButtonImage.png" />
+    <Resource Include="resources\StopDownloadButtonImage.png" />
     <Resource Include="windows\icon.ico" />
-    <Resource Include="ResumeDownloadButtonImage.png" />
-    <Resource Include="StopDownloadButton.png" />
+    <Resource Include="resources\ResumeDownloadButtonImage.png" />
   </ItemGroup>
 
 </Project>
